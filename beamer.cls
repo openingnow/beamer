@@ -1,6 +1,6 @@
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 \ProvidesClass{beamer}
-[2003/10/01 v0.8 Class for Typesetting a Beamer Presentation]
+[2003/10/01 v0.83 Class for Typesetting a Beamer Presentation]
 
 % Copyright 2003 by Till Tantau <tantau@cs.tu-berlin.de>.
 %
@@ -603,6 +603,8 @@
 
 \newcounter{subsectionslide}[subsection]
 \renewcommand\thesubsectionslide{\@arabic\c@subsectionslide}
+\def\beamer@entrycode{}
+\def\beamer@exitcode{}
 
 \newenvironment{frameslide}[1][1]{%
   {\let\@elt\@restorecounter\@overlaycounterresets}
@@ -611,8 +613,8 @@
   \ifnum\serialnumber=1\relax%
   \refstepcounter{subsectionslide}%
   \addtocontents{head}{\protect\headcommand{\protect\slideentry{\thesection}{\thesubsection}{\thesubsectionslide}{\thepage}{\lastsubsection}}}%
-  \fi\vspace*{-\baselineskip}\vfill}%
-  {\vskip0pt plus 1.5fill\clearpage}
+  \fi\beamer@entrycode\vspace*{-\baselineskip}\vfill}%
+  {\beamer@exitcode\vskip0pt plus 1.5fill\clearpage}
 
 \def\frametitle#1{%
   \vskip0pt plus -1fill%
@@ -808,7 +810,7 @@
   \setbox\tempbox\vbox\bgroup\leavevmode\afterassignment\@checknoslide\let\@next}
 \def\@checknoslide{%
   \ifcat\bgroup\noexpand\@next%
-  \let\@do\relax%
+  \let\@do\beamer@reseteecodes%
   \else\let\@do\@singletoken\fi%
   \@do}
 
@@ -825,7 +827,7 @@
   \dowhat%
   \if@anotherslide
   \advance\@serialnumber by 1\relax
-  \repeat}
+  \repeat\beamer@reseteecodes}
 
 \def\dosingleframe{\begin{frameslide}[1]\bgroup\aftergroup\@endslide\afterassignment\@checkslide\let\@next}
 \def\@checkslide{%
@@ -833,9 +835,14 @@
   \let\@do\relax%
   \else\let\@do\@singletoken\fi%
   \@do}
-\def\@endslide{\end{frameslide}}
-\def\@singletoken{\@next\egroup}
+\def\@endslide{\end{frameslide}\beamer@reseteecodes}
+\def\@singletoken{\@next\egroup\beamer@reseteecodes}
 
+\def\beamer@reseteecodes{\gdef\beamer@entrycode{}\gdef\beamer@exitcode{}\pagestyle{navigation}\thispagestyle{navigation}}
+
+\def\pictureframe{%
+  \def\beamer@entrycode{\vspace*{-\headheight}}%
+  \def\beamer@exitcode{\vspace*{-\footheight}\thispagestyle{empty}}\frame}
 
 % Sets dowhat to doif, if \serialnumber is in the specified
 % interval. Example: 5-7,-3,9,11,13- would mean pages
@@ -1050,15 +1057,24 @@
   \let\@evenfoot\@oddfoot}
 \pagestyle{navigation}
 
+%
+% Patch empty page style, so that transitions and navigation still works
+%
+\def\ps@empty{%
+  \let\@mkboth\@gobbletwo%
+  \def\@oddhead{\hyper@pagetransition\hyper@pageduration}
+  \def\@oddfoot{\hypertarget{Navigation\thepage}{}\hfil}
+  \let\@evenhead\@oddhead\let\@evenfoot\@oddfoot}
+
 \long\def\usebackgroundtemplate#1{%
   \def\@backgroundtemplate{#1}}
 
 \def\recalculatefoot{%
     \setbox\tempbox=\hbox{\@foottemplate}%
-    \postemp=\ht\tempbox%
-    \advance\postemp by \dp\tempbox%
-    \advance\postemp by 4pt%
-    \geometry{foot=\the\postemp}}
+    \footheight=\ht\tempbox%
+    \advance\footheight by \dp\tempbox%
+    \advance\footheight by 4pt%
+    \geometry{foot=\the\footheight}}
 \def\recalculatehead{%
   \setbox\tempbox=\hbox{\@headtemplate}%
   \headheight=\ht\tempbox%
@@ -1102,6 +1118,7 @@
 \newdimen\vboxoffset
 \newdimen\postemp
 \newdimen\headheight
+\newdimen\footheight
 
 \def\slideentry#1#2#3#4#5{%
   %section number, subsection number, slide number, page number

@@ -44,9 +44,10 @@
 
 \begin{document}
 
-\title{User's Guide to the Beamer Class, Version 0.81}
+\title{User's Guide to the Beamer Class, Version 0.83\\
+\Large\href{http://latex-beamer.sourceforge.net}{\texttt{http://latex-beamer.sourceforge.net}}}
 \author{Till Tantau\\
-  \texttt{tantau@cs.tu-berlin.de}}
+  \href{mailto:tantau@users.sourceforge.net}{\texttt{tantau@users.sourceforge.net}}}
 
 \maketitle
 
@@ -55,6 +56,9 @@
 
 
 \section{Introduction}
+
+
+\subsection{Overview}
 
 This user's guide explains the functionality of the \beamer\ class.
 It is a \LaTeX\ class that allows you to create a beamer
@@ -141,6 +145,119 @@ To structurize your text, you can use the commands \verb!\section! and
 \verb!\subsection!. These commands will not only create a table of
 contents, but will also create navigation bars.
 
+
+
+\subsection{Getting Started: Installation}
+
+To use the beamer class, you just need to put the files of the
+\beamer\ package in a directory that is read by \TeX. To uninstall the
+class, simply remove these files once more. The same is true of the
+\textsc{pgf} package, which you will also need.
+
+
+Unfortunately, there are different ways of making \TeX\ ``aware'' of
+the files in the \beamer\ package. Which way you should choose depends
+on how permanently you intend to use the class.
+
+
+\subsubsection{Installing Debian and Red Hat Packages}
+
+Currently, there are no out-of-the-box Debian or Red Hat packages of
+the beamer class available.
+
+
+
+\subsubsection{Temporary Installation}
+
+If you only wish to install the beamer class for a quick appraisal, do
+the following: Obtain the latest source version (ending
+\texttt{.tar.gz}) of the \beamer\ package from 
+\href{http://sourceforge.net/projects/latex-beamer/}{\texttt{http://sourceforge.net/projects/latex-beamer/}}
+(most likely, you have already done this). Next, you also need the
+\textsc{pgf} package, which can be found, for example, at 
+\href{http://www.ctan.org/tex-archive/graphics/pgf/}{\texttt{http://www.ctan.org/tex-archive/graphics/pgf/}}.
+
+In both cases, the packages contain a bunch of files (for the \beamer\
+class, \texttt{beamer.cls} is one of these files and happens to be the
+most important one, for the \textsc{pgf} package \texttt{pgf.sty} is
+the most important file). 
+Place all files in two directories. For example,
+\texttt{/home/tantau/beamer/} and \texttt{/home/tantau/pgf/} would
+work fine for me. Then setup the environment variable called
+\texttt{TEXINPUTS} to be the following string (how exactly this is
+done  depends on your operating system and shell):
+
+\begin{verbatim}
+.:/home/tantau/beamer:/home/tantau/pgf:
+\end{verbatim}
+
+Naturally, if the \texttt{TEXINPUTS} variable is already defined
+differently, you should \emph{add} the two directories to the list. Do
+not forget to place a colon at the end (corresponding to an empty
+path), which will include all standard directories.
+
+
+
+\subsubsection{Installation in a texmf Tree}
+
+For a more permanent installation, you can place the files of the
+\beamer\ package and of the \textsc{pgf} package (see the previous
+subsection on how to obtain them) in an appropriate \texttt{texmf}
+tree. 
+
+When you ask \TeX\ to use a certain class or package, it usually looks
+for the necessary files in so-called \texttt{texmf} trees. These trees
+are simply huge directories that contain these files. By default,
+\TeX\ looks for files in three different \texttt{texmf} trees:
+\begin{itemize}
+\item
+  The root \texttt{texmf} tree, which is usually located at
+  \texttt{/usr/share/}, \verb!c:\texmf\!, or\\
+  \verb!c:\Program Files\TeXLive\texmf\!.
+\item
+  The local  \texttt{texmf} tree, which is usually located at
+  \texttt{/usr/local/share/}, \verb!c:\localtexmf\!, or\\
+  \verb!c:\Program Files\TeXLive\texmf-local\!.
+\item
+  Your personal  \texttt{texmf} tree, which is located in your home
+  directory.   
+\end{itemize}
+
+You should install the packages either in the local tree or in
+your personal tree, depending on whether you have write access to the
+local tree. Installation in the root tree can cause problems, since an
+update of the whole \TeX\ installation will replace this whole tree.
+
+Inside whatever \texttt{texmf} directory you have chosen, create
+the sub-sub-sub-directories
+\begin{itemize}
+\item
+  \texttt{texmf/tex/latex/beamer} and
+\item
+  \texttt{texmf/tex/latex/pgf}
+\end{itemize}
+and place all files in these two directories.
+
+Finally, you need to rebuild \TeX's filename database. This done by
+running the command  \texttt{texhash} or \texttt{mktexlsr} (they are
+the same). In MikTeX, there is a menu option to do this.
+
+\vskip1em
+For a more detailed explanation of the standard installation process
+of packages, you might wish to consult
+\href{http://www.ctan.org/installationadvice/}{\texttt{http://www.ctan.org/installationadvice/}}.
+However, note that the \beamer\ package does not come with a
+\texttt{.ins} file (simply skip that part).
+
+
+
+\subsection{Testing the Installation}
+
+To test your installation, copy the file \texttt{beamerexample.tex}
+from the documentation subdirectory to some place where you usually
+create presentations. Then run the command \texttt{pdflatex} twice on
+the file and check whether the resulting \texttt{beamerexample.pdf}
+looks correct. If so, you are all set.
 
 
 
@@ -306,59 +423,6 @@ to view the resulting presentation.
 When printing a presentation, make sure that the option ``expand small
 pages to paper size'' is enabled. This is necessary, because slides are
 only 128mm times 96mm.
-
-
-
-%\subsubsection{Creating PostScript}
-%\label{section-postscript}
-
-%To create a PostScript version of this file, you first need to run
-%\verb!latex! twice, then run \verb!dvips!. 
-
-%\begin{verbatim}
-%> latex main.tex
-%    ... lots of output ...
-%> latex main.tex
-%    ... lots of output ...
-%> dvips -P pdf -T 128mm,96mm main.dvi
-%\end{verbatim}
-
-%The first of the two options (\verb!-P pdf!) tells \verb!dvips! to use
-%Type~1 outline fonts instead of the usual Type~3 bitmap fonts. You may
-%wish to omit this option if there is a problem with it. The second
-%option (\verb!-T 128mm,96mm!) tells  \verb!dvips! that each slide is
-%128mm by 96mm. If you do not specify this option, the slide will be
-%``kind of lost'' on a big blank page.
-
-%If you wish each slide to completely fill a letter-sized page, use the
-%following commands instead:
-
-%\begin{verbatim}
-%> dvips -P pdf -tletter main.dvi -o main.temp.ps
-%> psnup -1 -W128mm -H96mm -pletter main.temp.ps main.ps
-%\end{verbatim}
-
-%For A4-sized paper, use:
-
-%\begin{verbatim}
-%> dvips -P pdf -ta4 main.dvi -o main.temp.ps
-%> psnup -1 -W128mm -H96mm -pa4 main.temp.ps main.ps
-%\end{verbatim}
-
-%In order to create a white margin around the whole page (which is sometimes
-%useful for printing), add the option \verb!-m 1cm! to the options of
-%\verb!psnup!. 
-
-%To put two or four slides on one page, use \verb!-2!, respectively
-%\verb!-4! instead of \verb!-1! as the first parameter for
-%\verb!psnup!. In this case, you may wish to add the option
-%\verb!-b 1cm! to add a bit of space around the individual slides.
-
-%You can convert a PostScript file to a pdf file using
-
-%\begin{verbatim}
-%> ps2pdf main.ps main.pdf
-%\end{verbatim}
 
 
 
@@ -598,6 +662,44 @@ a series of slides. You create a frame using the command
 \verb!\frame!. This command takes one parameter, namely the
 contents of the frame. All of this text that is not tagged by overlay
 specifications is shown on all slides of the frame. 
+
+\Command{frame}
+\Parameters{
+\item
+  optional parameter in square brackets: a specification of slides to
+  be shown, see subsection \ref{subsection-restriction} for details. 
+\item
+  the frame's contents.
+}
+\Example
+\begin{verbatim}
+\frame
+{
+  Some text...
+
+  Some more...
+}
+\end{verbatim}
+
+\Command{pictureframe}
+\Parameters{
+\item
+  optional parameter in square brackets: a specification of slides to
+  be shown, see subsection \ref{subsection-restriction} for details. 
+\item
+  the frame's contents.
+}
+\Description{
+  This command creates a frame that can be used to show a big picture
+  that completely fills the frame. All head and foot lines will be
+  suppressed. 
+  }
+\Example
+\begin{verbatim}
+\pgfdeclareimage{bigimage}{}{9.6cm}{bigimagefilename}
+\pictureframe{\hfill\pgfuseimage{bigimage}\hfill}
+\end{verbatim}
+
 
 
 
@@ -857,6 +959,7 @@ The two special environments \verb!onlyenv! and \verb!uncoverenv! are
 
 
 \subsection{Restricting the Slides of a Frame}
+\label{subsection-restriction}
 
 As mentioned above, the number of slides in a frame is automatically
 calculated. If the largest number mentioned in any
@@ -2332,6 +2435,18 @@ certain global behaviors of the presentation.
   \texttt{themecolor}, which takes three parameters: a red, a green,
   and a blue value as floating point numbers between 0 (black) and 1
   (highest intensity). 
+  }
+
+\ClassOption{bigger}
+\Description{
+  Makes all fonts a little bigger, which makes the text more
+  readable. The downside is that less fits onto each frame.
+  }
+
+\ClassOption{smaller}
+\Description{
+  Makes all fonts a little smaller, which allows you to fit more onto
+  frames. Normally, this is not a good idea.
   }
 
 \ClassOption{sans}
