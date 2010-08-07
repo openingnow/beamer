@@ -10,7 +10,7 @@
 \providetranslation{seven}{siedem}
 \providetranslation{eight}{osiem}
 \providetranslation{nine}{dziewi\k{e}\'{c}}
-\providetranslation{ten}{dziesi\{e}\'{c}}
+\providetranslation{ten}{dziesi\k{e}\'{c}}
 \providetranslation{eleven}{jedena\'{s}cie}
 \providetranslation{twelve}{dwana\'{s}cie}
 
@@ -23,7 +23,7 @@
 \providetranslation{Seven}{Siedem}
 \providetranslation{Eight}{Osiem}
 \providetranslation{Nine}{Dziewi\k{e}\'{c}}
-\providetranslation{Ten}{Dziesi\{e}\'{c}}
+\providetranslation{Ten}{Dziesi\k{e}\'{c}}
 \providetranslation{Eleven}{Jedena\'{s}cie}
 \providetranslation{Twelve}{Dwana\'{s}cie}
 
