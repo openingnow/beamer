@@ -530,7 +530,7 @@ sectionstyle=show/shaded,subsectionstyle=show/show/shaded
   \lyxnote
   You can give options to the |\tableofcontents| command by inserting a \TeX-mode text with the options in square brackets directly after the table of contents.
 
-  \begin{element}{sections/subsections in toc}\semiyes\no\no
+  \begin{element}{section/subsection in toc}\semiyes\no\no
     This is a parent template, whose children are |section in toc| and |subsection in toc|. This means that if you use the |\setbeamertemplate| command on this template, the command is instead called for both of these children (with the same arguments).
 
     \begin{templateoptions}
@@ -553,7 +553,7 @@ sectionstyle=show/shaded,subsectionstyle=show/show/shaded
     If none of the above options suits you, you have to change the templates |section in toc| and |subsection in toc| directly.
   \end{element}
 
-  \begin{element}{sections/subsections in toc shaded}\semiyes\no\no
+  \begin{element}{section/subsection in toc shaded}\semiyes\no\no
     A parent template with children |section in toc shaded| and |subsection in toc shaded|. They are used to render section and subsection entries when they are currently shaded; like all non-current subsections in |\tableofcontents[currentsubsection]|.
 
     \begin{templateoptions}
@@ -561,7 +561,7 @@ sectionstyle=show/shaded,subsectionstyle=show/show/shaded
       In the default setting, the templates |section in toc shaded| and |subsection in toc shaded| just show whatever the nonshaded versions of these templates show, but only \meta{opaqueness}\% opaque. The default is 20\%.
 
       \example
-      |\setbeamertemplate{table of contents shaded}[default][50]| makes dimmed entries 50\% transparent.
+      |\setbeamertemplate{section in toc shaded}[default][50]| makes dimmed entries 50\% transparent.
     \end{templateoptions}
   \end{element}
 \end{command}
